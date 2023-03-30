@@ -1,0 +1,40 @@
+definitions:
+  employee.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+info:
+  contact:
+    name: shen
+    url: https://github.com/shenxiang11
+  description: admin-api
+  title: 电商后台
+  version: "1.0"
+paths:
+  /employee/list:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/employee.ErrorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/employee.ErrorResponse'
+      summary: 查询所有员工
+      tags:
+      - Admin
+swagger: "2.0"

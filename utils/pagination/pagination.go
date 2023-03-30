@@ -15,7 +15,6 @@ var (
 type Pagination struct {
 	Page       int `json:"page"`
 	PageSize   int `json:"pageSize"`
-	PageCount  int `json:"pageCount"`
 	TotalCount int `json:"totalCount"`
 	List       any `json:"list"`
 }
@@ -27,13 +26,6 @@ func New(page, pageSize, total int) *Pagination {
 	if pageSize > MaxPageSize {
 		pageSize = MaxPageSize
 	}
-	pageCount := -1
-	if total >= 0 {
-		pageCount = (total + pageSize - 1) / pageSize
-		if page > pageCount {
-			page = pageCount
-		}
-	}
 	if page <= 0 {
 		page = 1
 	}
@@ -41,7 +33,6 @@ func New(page, pageSize, total int) *Pagination {
 	return &Pagination{
 		Page:       page,
 		PageSize:   pageSize,
-		PageCount:  pageCount,
 		TotalCount: total,
 	}
 }

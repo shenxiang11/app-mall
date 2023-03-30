@@ -1,13 +1,16 @@
 package employee
 
-import "gorm.io/gorm"
+import (
+	"github.com/sx931210/app-mall/utils/orm"
+)
 
 type Employee struct {
-	gorm.Model
+	orm.BaseModel
 	Name       string `json:"name"`
 	Avatar     string `json:"avatar"`
-	Password   string `json:"password"`
-	IsNotValid bool   `json:"isNotValid""`
+	Password   string `json:"-"`
+	Salt       string `json:"-"`
+	IsNotValid bool   `json:"-""`
 }
 
 func NewEmployee(name string, password string, avatar string) *Employee {

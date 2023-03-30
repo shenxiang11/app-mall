@@ -1,7 +1,18 @@
 definitions:
-  employee.ErrorResponse:
+  employee.CreateEmployeeRequest:
     properties:
-      message:
+      avatar:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  employee.LoginRequest:
+    properties:
+      name:
+        type: string
+      password:
         type: string
     type: object
 info:
@@ -12,11 +23,59 @@ info:
   title: 电商后台
   version: "1.0"
 paths:
+  /employee:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 员工信息
+        in: body
+        name: CreateEmployeeRequest
+        required: true
+        schema:
+          $ref: '#/definitions/employee.CreateEmployeeRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: 创建员工
+      tags:
+      - Employee
+  /employee/ban/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: 禁止指定用户再次登录
+      tags:
+      - Employee
   /employee/list:
     get:
       consumes:
       - application/json
       parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Page number
         in: query
         name: page
@@ -25,16 +84,43 @@ paths:
         in: query
         name: pageSize
         type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/employee.ErrorResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/employee.ErrorResponse'
+      produces:
+      - application/json
+      responses: {}
       summary: 查询所有员工
       tags:
-      - Admin
+      - Employee
+  /employee/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 登录信息
+        in: body
+        name: LoginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/employee.LoginRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: 根据用户名和密码登录
+      tags:
+      - Employee
+  /employee/self:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: 获取当前登录员工信息
+      tags:
+      - Employee
 swagger: "2.0"

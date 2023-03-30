@@ -6,6 +6,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/sx931210/app-mall/admin-api/api"
 	_ "github.com/sx931210/app-mall/admin-api/docs"
+	"github.com/sx931210/app-mall/admin-api/middleware"
 )
 
 // @title 电商后台
@@ -15,6 +16,8 @@ import (
 // @contact.url https://github.com/shenxiang11
 func main() {
 	r := gin.Default()
+
+	r.Use(middleware.CORSMiddleware())
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(
 		swaggerFiles.Handler,

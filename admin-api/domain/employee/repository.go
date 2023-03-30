@@ -27,9 +27,8 @@ func (r *Repository) GetOneById(eid uint) (*Employee, error) {
 
 func (r *Repository) GetOneByName(name string) (*Employee, error) {
 	var employee Employee
-	employee.Name = name
 
-	if err := r.db.First(&employee).Error; err != nil {
+	if err := r.db.Where("name = ?", name).First(&employee).Error; err != nil {
 		return nil, err
 	}
 

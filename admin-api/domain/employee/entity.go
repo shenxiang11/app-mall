@@ -10,7 +10,7 @@ type Employee struct {
 	Avatar     string `json:"avatar"`
 	Password   string `json:"-"`
 	Salt       string `json:"-"`
-	IsNotValid bool   `json:"-""`
+	IsNotValid bool   `json:"isNotValid""`
 }
 
 func NewEmployee(name string, password string, avatar string) *Employee {

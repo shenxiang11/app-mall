@@ -39,7 +39,11 @@ func (c *Controller) GetAll(g *gin.Context) {
 
 	page = c.employeeService.GetAll(page)
 
-	g.JSON(http.StatusOK, page)
+	g.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"message": "获取成功",
+		"result":  page,
+	})
 }
 
 // Create godoc
@@ -63,7 +67,10 @@ func (c *Controller) Create(g *gin.Context) {
 		return
 	}
 
-	g.JSON(http.StatusCreated, api_helper.Response{Message: "创建成功"})
+	g.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"message": "创建成功",
+	})
 }
 
 // Login godoc
@@ -104,7 +111,11 @@ func (c *Controller) Login(g *gin.Context) {
 		return
 	}
 
-	g.JSON(http.StatusOK, LoginResponse{Token: token})
+	g.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"message": "登录成功",
+		"result":  LoginResponse{Token: token},
+	})
 }
 
 // GetSelfInfo godoc
@@ -115,15 +126,28 @@ func (c *Controller) Login(g *gin.Context) {
 // @Param Authorization header string true "Authentication header"
 // @Router /employee/self [get]
 func (c *Controller) GetSelfInfo(g *gin.Context) {
-	eid := g.GetInt("uid")
+	eid, exist := g.Get("uid")
+	if !exist {
+		api_helper.HandlerError(g, errors.New("获取 uid 失败"))
+		return
+	}
+	uid, ok := eid.(uint)
+	if !ok {
+		api_helper.HandlerError(g, errors.New("获取 uid 失败"))
+		return
+	}
 
-	info, err := c.employeeService.GetEmployeeById(uint(eid))
+	info, err := c.employeeService.GetEmployeeById(uid)
 	if err != nil {
 		api_helper.HandlerError(g, err)
 		return
 	}
 
-	g.JSON(http.StatusOK, info)
+	g.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"message": "获取成功",
+		"result":  info,
+	})
 }
 
 // Ban godoc
@@ -155,5 +179,8 @@ func (c *Controller) Ban(g *gin.Context) {
 		return
 	}
 
-	g.JSON(http.StatusOK, api_helper.Response{Message: "更新成功"})
+	g.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"message": "更新成功",
+	})
 }
